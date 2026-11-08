@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc</Extensions>
+    </Filter>
+    <Filter Include="Linux AVS core (port)">
+      <UniqueIdentifier>{6A3E2C4B-1F4D-4E7A-9C2B-5D8E7F9A0B1C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Driver Files">
+      <UniqueIdentifier>{8E41214B-6785-4CFE-B992-037D68949A14}</UniqueIdentifier>
+      <Extensions>inf;inv;inx;mof;mc;</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="adapter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="avs_boot.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="avs_cldma.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="avs_config.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="avs_csaudio.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="avs_dsp_boot.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="avs_hdalink.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="avs_hdastream.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="avs_ipc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="avs_jack.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="avs_mailbox.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="avs_nhlt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="avs_port_win.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mintopo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="minwavert.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="port\acpi_nhlt.c">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClCompile>
+    <ClCompile Include="port\avs_port_control.c">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClCompile>
+    <ClCompile Include="port\avs_port_core.c">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClCompile>
+    <ClCompile Include="port\avs_port_dsp.c">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClCompile>
+    <ClCompile Include="port\avs_port_rt_km.c">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClCompile>
+    <ClCompile Include="port\avs_port_uuids.c">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClCompile>
+    <ClCompile Include="port\avs_tplg_loader.c">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClCompile>
+    <ClCompile Include="port\messages.c">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClCompile>
+    <ClCompile Include="port\path.c">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClCompile>
+    <ClCompile Include="port\topology.c">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="adsp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="avs_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="avs_pcls.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="avs_regs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="driver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="port\acpi_nhlt.h">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClInclude>
+    <ClInclude Include="port\asoc.h">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClInclude>
+    <ClInclude Include="port\avs.h">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClInclude>
+    <ClInclude Include="port\avs_port_bridge.h">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClInclude>
+    <ClInclude Include="port\avs_tplg_loader.h">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClInclude>
+    <ClInclude Include="port\control.h">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClInclude>
+    <ClInclude Include="port\linux_compat.h">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClInclude>
+    <ClInclude Include="port\messages.h">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClInclude>
+    <ClInclude Include="port\path.h">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClInclude>
+    <ClInclude Include="port\soc_compat.h">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClInclude>
+    <ClInclude Include="port\tokens.h">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClInclude>
+    <ClInclude Include="port\topology.h">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClInclude>
+    <ClInclude Include="port\utils.h">
+      <Filter>Linux AVS core (port)</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Inf Include="avswin.inf">
+      <Filter>Driver Files</Filter>
+    </Inf>
+  </ItemGroup>
+</Project>

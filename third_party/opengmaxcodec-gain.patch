@@ -1,0 +1,93 @@
+diff --git a/opengmaxcodec/opengmaxcodec.c b/opengmaxcodec/opengmaxcodec.c
+index 9665c53..51c844a 100644
+--- a/opengmaxcodec/opengmaxcodec.c
++++ b/opengmaxcodec/opengmaxcodec.c
+@@ -464,6 +464,48 @@ Exit:
+ 	return status;
+ }
+ 
++//
++// AVS OpenAudio Driver Project modification (2026), not part of CoolStar's
++// original: the MAX98927 gain registers can be overridden per device from its
++// hardware registry key (Enum\ACPI\MX98927\<instance>\Device Parameters,
++// REG_DWORD), re-read on every power-up. Defaults are the values the Linux
++// max98927 codec driver programs at probe (sound/soc/codecs/max98927.c,
++// "Set initial volume (+13dB)"); CoolStar's original values were
++// DigitalVolume 60 and SpeakerGain 1 (+2 dB in total).
++//   SpeakerGain        R003C, 1..6 = +3..+18 dB in 3 dB steps (0 = mute)  default 5
++//   DigitalVolume      R0036, 0..127 = -16 dB + 0.25 dB/step (64 = 0 dB)  default 0x38
++//   BoostCurrentLimit  R0042 value (Linux 0x3E; CoolStar used 0x28)       default 0x3E
++//
++#define GMAX_DEFAULT_SPEAKER_GAIN     5
++#define GMAX_DEFAULT_DIGITAL_VOLUME   0x38
++#define GMAX_DEFAULT_BOOST_CTRL1      0x3E
++
++static ULONG
++GmaxReadDeviceParam(
++	PGMAX_CONTEXT pDevice,
++	PCWSTR Name,
++	ULONG DefaultValue,
++	ULONG MaxValue
++) {
++	WDFKEY key;
++	ULONG value = DefaultValue;
++	UNICODE_STRING valueName;
++
++	RtlInitUnicodeString(&valueName, Name);
++	if (NT_SUCCESS(WdfDeviceOpenRegistryKey(pDevice->FxDevice, PLUGPLAY_REGKEY_DEVICE,
++		KEY_READ, WDF_NO_OBJECT_ATTRIBUTES, &key))) {
++		ULONG v = 0;
++		if (NT_SUCCESS(WdfRegistryQueryULong(key, &valueName, &v))) {
++			value = v;
++		}
++		WdfRegistryClose(key);
++	}
++	if (value > MaxValue) {
++		value = MaxValue;
++	}
++	return value;
++}
++
+ NTSTATUS
+ StartCodec(
+ 	PGMAX_CONTEXT pDevice
+@@ -492,8 +534,17 @@ StartCodec(
+ 			}
+ 		}
+ 
+-		UINT16 ampVolume = 60;
+-		UINT16 speakerGain = 1;
++		UINT16 ampVolume = (UINT16)GmaxReadDeviceParam(pDevice, L"DigitalVolume", GMAX_DEFAULT_DIGITAL_VOLUME, 0x7F);
++		UINT16 speakerGain = (UINT16)GmaxReadDeviceParam(pDevice, L"SpeakerGain", GMAX_DEFAULT_SPEAKER_GAIN, 6);
++		UINT16 boostCtrl1 = (UINT16)GmaxReadDeviceParam(pDevice, L"BoostCurrentLimit", GMAX_DEFAULT_BOOST_CTRL1, 0x3F);
++
++		DbgPrint(DRIVERNAME "MAX98927 UID %d: SpeakerGain %u, DigitalVolume 0x%X, BoostCtrl1 0x%X\n",
++			(int)pDevice->UID, speakerGain, ampVolume, boostCtrl1);
++
++		status = gmax_reg_write(pDevice, MAX98927_R0042_BOOST_CTRL1, (UINT8)boostCtrl1);
++		if (!NT_SUCCESS(status)) {
++			return status;
++		}
+ 
+ 		status = gmax_reg_write(pDevice, MAX98927_R0036_AMP_VOL_CTRL, ampVolume & 0x7F);
+ 		if (!NT_SUCCESS(status)) {
+diff --git a/opengmaxcodec/opengmaxcodec.inf b/opengmaxcodec/opengmaxcodec.inf
+index 44d8ff7..d76258d 100644
+--- a/opengmaxcodec/opengmaxcodec.inf
++++ b/opengmaxcodec/opengmaxcodec.inf
+@@ -50,6 +50,15 @@ CopyFiles=Drivers_Dir
+ [OpenGmaxCodec_Device.NT.HW]
+ Include=pci.inf
+ Needs=PciD3ColdSupported.HW
++AddReg=OpenGmaxCodec_Device.HW.AddReg
++
++; AVS OpenAudio modification: MAX98927 gain defaults (Linux values), written
++; only if absent (0x00010003 = REG_DWORD | NOCLOBBER) so user changes survive
++; a reinstall. See StartCodec() in opengmaxcodec.c.
++[OpenGmaxCodec_Device.HW.AddReg]
++HKR,,SpeakerGain,0x00010003,5
++HKR,,DigitalVolume,0x00010003,0x38
++HKR,,BoostCurrentLimit,0x00010003,0x3E
+ 
+ [Drivers_Dir]
+ opengmaxcodec.sys

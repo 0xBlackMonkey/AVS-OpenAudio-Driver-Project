@@ -1,0 +1,185 @@
+;
+; avswin.inf -- Intel AVS (Skylake) audio DSP on sklhdaudbus, PortCls/WaveRT.
+; Test-signing only.
+;
+; One Windows endpoint (render or capture) per configured topology FE (avswin.cfg
+; Endpoint<n>Fe). The driver registers subdevices "Wave<n>" + "Topo<n>";
+; interfaces for n = 0..3 are declared here, unused ones stay disabled.
+;
+
+[Version]
+Signature   = "$WINDOWS NT$"
+Class       = MEDIA
+ClassGuid   = {4d36e96c-e325-11ce-bfc1-08002be10318}
+Provider    = %ManufacturerName%
+CatalogFile = avswin.cat
+DriverVer   = ; filled in by stampinf
+PnpLockdown = 1
+
+[SourceDisksNames]
+1 = %DiskName%
+
+[SourceDisksFiles]
+avswin.sys = 1
+
+[DestinationDirs]
+AVS_CopyFiles = 12 ; %windir%\System32\drivers
+
+[Manufacturer]
+%ManufacturerName% = AVS,NT$ARCH$
+
+[AVS.NT$ARCH$]
+; Child device created by sklhdaudbus.sys for the DSP function
+%DeviceName% = AVS_Device, CSAUDIO\ADSP&CTLR_VEN_8086&CTLR_DEV_9D71
+
+;======================================================================
+[AVS_Device.NT]
+Include   = ks.inf, wdmaudio.inf
+Needs     = KS.Registration, WDMAUDIO.Registration
+CopyFiles = AVS_CopyFiles
+AddReg    = AVS_Device.AddReg
+
+[AVS_CopyFiles]
+avswin.sys
+
+[AVS_Device.AddReg]
+HKR,,AssociatedFilters,,"wdmaud,swmidi,redbook"
+HKR,,Driver,,avswin.sys
+HKR,Drivers,SubClasses,,"wave,midi,mixer"
+HKR,Drivers\wave\wdmaud.drv,Driver,,wdmaud.drv
+HKR,Drivers\midi\wdmaud.drv,Driver,,wdmaud.drv
+HKR,Drivers\mixer\wdmaud.drv,Driver,,wdmaud.drv
+HKR,Drivers\wave\wdmaud.drv,Description,,%DeviceName%
+HKR,Drivers\midi\wdmaud.drv,Description,,%WDM_MIDI%
+HKR,Drivers\mixer\wdmaud.drv,Description,,%DeviceName%
+; Bring-up: no idle power-down (0 = idle detection off, idle state D0).
+; Sleep/resume still goes through IAdapterPowerManagement.
+HKR,PowerSettings,ConservationIdleTime,1,00,00,00,00
+HKR,PowerSettings,PerformanceIdleTime,1,00,00,00,00
+HKR,PowerSettings,IdlePowerState,1,00,00,00,00
+
+;======================================================================
+[AVS_Device.NT.Interfaces]
+AddInterface=%KSCATEGORY_AUDIO%,%KSNAME_Wave0%,AVS.I.Wave0
+AddInterface=%KSCATEGORY_RENDER%,%KSNAME_Wave0%,AVS.I.Wave0
+AddInterface=%KSCATEGORY_REALTIME%,%KSNAME_Wave0%,AVS.I.Wave0
+AddInterface=%KSCATEGORY_CAPTURE%,%KSNAME_Wave0%,AVS.I.Wave0
+AddInterface=%KSCATEGORY_AUDIO%,%KSNAME_Topo0%,AVS.I.Topo0
+AddInterface=%KSCATEGORY_TOPOLOGY%,%KSNAME_Topo0%,AVS.I.Topo0
+AddInterface=%KSCATEGORY_AUDIO%,%KSNAME_Wave1%,AVS.I.Wave1
+AddInterface=%KSCATEGORY_RENDER%,%KSNAME_Wave1%,AVS.I.Wave1
+AddInterface=%KSCATEGORY_REALTIME%,%KSNAME_Wave1%,AVS.I.Wave1
+AddInterface=%KSCATEGORY_CAPTURE%,%KSNAME_Wave1%,AVS.I.Wave1
+AddInterface=%KSCATEGORY_AUDIO%,%KSNAME_Topo1%,AVS.I.Topo1
+AddInterface=%KSCATEGORY_TOPOLOGY%,%KSNAME_Topo1%,AVS.I.Topo1
+AddInterface=%KSCATEGORY_AUDIO%,%KSNAME_Wave2%,AVS.I.Wave2
+AddInterface=%KSCATEGORY_RENDER%,%KSNAME_Wave2%,AVS.I.Wave2
+AddInterface=%KSCATEGORY_REALTIME%,%KSNAME_Wave2%,AVS.I.Wave2
+AddInterface=%KSCATEGORY_CAPTURE%,%KSNAME_Wave2%,AVS.I.Wave2
+AddInterface=%KSCATEGORY_AUDIO%,%KSNAME_Topo2%,AVS.I.Topo2
+AddInterface=%KSCATEGORY_TOPOLOGY%,%KSNAME_Topo2%,AVS.I.Topo2
+AddInterface=%KSCATEGORY_AUDIO%,%KSNAME_Wave3%,AVS.I.Wave3
+AddInterface=%KSCATEGORY_RENDER%,%KSNAME_Wave3%,AVS.I.Wave3
+AddInterface=%KSCATEGORY_REALTIME%,%KSNAME_Wave3%,AVS.I.Wave3
+AddInterface=%KSCATEGORY_CAPTURE%,%KSNAME_Wave3%,AVS.I.Wave3
+AddInterface=%KSCATEGORY_AUDIO%,%KSNAME_Topo3%,AVS.I.Topo3
+AddInterface=%KSCATEGORY_TOPOLOGY%,%KSNAME_Topo3%,AVS.I.Topo3
+
+[AVS.I.Wave0]
+AddReg=AVS.I.Wave0.AddReg
+
+[AVS.I.Wave0.AddReg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%AVS.Wave0.szPname%
+
+[AVS.I.Topo0]
+AddReg=AVS.I.Topo0.AddReg
+
+[AVS.I.Topo0.AddReg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%AVS.Topo0.szPname%
+
+[AVS.I.Wave1]
+AddReg=AVS.I.Wave1.AddReg
+
+[AVS.I.Wave1.AddReg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%AVS.Wave1.szPname%
+
+[AVS.I.Topo1]
+AddReg=AVS.I.Topo1.AddReg
+
+[AVS.I.Topo1.AddReg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%AVS.Topo1.szPname%
+
+[AVS.I.Wave2]
+AddReg=AVS.I.Wave2.AddReg
+
+[AVS.I.Wave2.AddReg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%AVS.Wave2.szPname%
+
+[AVS.I.Topo2]
+AddReg=AVS.I.Topo2.AddReg
+
+[AVS.I.Topo2.AddReg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%AVS.Topo2.szPname%
+
+[AVS.I.Wave3]
+AddReg=AVS.I.Wave3.AddReg
+
+[AVS.I.Wave3.AddReg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%AVS.Wave3.szPname%
+
+[AVS.I.Topo3]
+AddReg=AVS.I.Topo3.AddReg
+
+[AVS.I.Topo3.AddReg]
+HKR,,CLSID,,%Proxy.CLSID%
+HKR,,FriendlyName,,%AVS.Topo3.szPname%
+
+;======================================================================
+[AVS_Device.NT.Services]
+AddService = avswin, 0x00000002, AVS_Service_Inst
+
+[AVS_Service_Inst]
+DisplayName   = %ServiceName%
+ServiceType   = 1 ; SERVICE_KERNEL_DRIVER
+StartType     = 3 ; SERVICE_DEMAND_START
+ErrorControl  = 1 ; SERVICE_ERROR_NORMAL
+ServiceBinary = %12%\avswin.sys
+
+;======================================================================
+[Strings]
+DiskName         = "AVS Windows Audio Driver Install Disk"
+ManufacturerName = "Open AVS Driver Project"
+DeviceName       = "Intel AVS Audio DSP (Skylake)"
+ServiceName      = "AVS Windows Audio DSP Driver"
+WDM_MIDI         = "AVS WDM MIDI"
+
+Proxy.CLSID         = "{17CCA71B-ECD7-11D0-B908-00A0C9223196}"
+KSCATEGORY_AUDIO    = "{6994AD04-93EF-11D0-A3CC-00A0C9223196}"
+KSCATEGORY_RENDER   = "{65E8773E-8F56-11D0-A3B9-00A0C9223196}"
+KSCATEGORY_CAPTURE  = "{65E8773D-8F56-11D0-A3B9-00A0C9223196}"
+KSCATEGORY_REALTIME = "{EB115FFC-10C8-4964-831D-6DCB02E6F23F}"
+KSCATEGORY_TOPOLOGY = "{DDA54A40-1E4C-11D1-A050-405705C10000}"
+
+KSNAME_Wave0         = "Wave0"
+KSNAME_Topo0         = "Topo0"
+AVS.Wave0.szPname    = "AVS Wave 0"
+AVS.Topo0.szPname    = "AVS Topology 0"
+KSNAME_Wave1         = "Wave1"
+KSNAME_Topo1         = "Topo1"
+AVS.Wave1.szPname    = "AVS Wave 1"
+AVS.Topo1.szPname    = "AVS Topology 1"
+KSNAME_Wave2         = "Wave2"
+KSNAME_Topo2         = "Topo2"
+AVS.Wave2.szPname    = "AVS Wave 2"
+AVS.Topo2.szPname    = "AVS Topology 2"
+KSNAME_Wave3         = "Wave3"
+KSNAME_Topo3         = "Topo3"
+AVS.Wave3.szPname    = "AVS Wave 3"
+AVS.Topo3.szPname    = "AVS Topology 3"

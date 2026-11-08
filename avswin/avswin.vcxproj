@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{79858158-AA43-DFB3-4709-18218695FFBC}</ProjectGuid>
+    <TemplateGuid>{dd38f7fc-d7bd-488b-9242-7d8754cde80d}</TemplateGuid>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <Configuration>Debug</Configuration>
+    <Platform Condition="'$(Platform)' == ''">x64</Platform>
+    <RootNamespace>avswin</RootNamespace>
+    <WindowsTargetPlatformVersion>$(LatestTargetPlatformVersion)</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <TargetVersion>Windows10</TargetVersion>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>WindowsKernelModeDriver10.0</PlatformToolset>
+    <ConfigurationType>Driver</ConfigurationType>
+    <DriverType>WDM</DriverType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <TargetVersion>Windows10</TargetVersion>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>WindowsKernelModeDriver10.0</PlatformToolset>
+    <ConfigurationType>Driver</ConfigurationType>
+    <DriverType>WDM</DriverType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
+    <TargetName>avswin</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
+    <TargetName>avswin</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DriverSign>
+      <FileDigestAlgorithm>sha256</FileDigestAlgorithm>
+    </DriverSign>
+    <ClCompile>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(DDK_LIB_PATH)portcls.lib;$(DDK_LIB_PATH)stdunk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DriverSign>
+      <FileDigestAlgorithm>sha256</FileDigestAlgorithm>
+    </DriverSign>
+    <ClCompile>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>$(DDK_LIB_PATH)portcls.lib;$(DDK_LIB_PATH)stdunk.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <FilesToPackage Include="$(TargetPath)" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="adapter.cpp" />
+    <ClCompile Include="avs_boot.c" />
+    <ClCompile Include="avs_cldma.c" />
+    <ClCompile Include="avs_config.c" />
+    <ClCompile Include="avs_csaudio.c" />
+    <ClCompile Include="avs_dsp_boot.c" />
+    <ClCompile Include="avs_hdalink.c" />
+    <ClCompile Include="avs_hdastream.c" />
+    <ClCompile Include="avs_ipc.c" />
+    <ClCompile Include="avs_jack.c" />
+    <ClCompile Include="avs_mailbox.c" />
+    <ClCompile Include="avs_nhlt.c" />
+    <ClCompile Include="avs_port_win.c" />
+    <ClCompile Include="mintopo.cpp" />
+    <ClCompile Include="minwavert.cpp" />
+    <ClCompile Include="port\acpi_nhlt.c" />
+    <ClCompile Include="port\avs_port_control.c" />
+    <ClCompile Include="port\avs_port_core.c" />
+    <ClCompile Include="port\avs_port_dsp.c" />
+    <ClCompile Include="port\avs_port_rt_km.c" />
+    <ClCompile Include="port\avs_port_uuids.c" />
+    <ClCompile Include="port\avs_tplg_loader.c" />
+    <ClCompile Include="port\messages.c" />
+    <ClCompile Include="port\path.c" />
+    <ClCompile Include="port\topology.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="adsp.h" />
+    <ClInclude Include="avs_api.h" />
+    <ClInclude Include="avs_pcls.h" />
+    <ClInclude Include="avs_regs.h" />
+    <ClInclude Include="driver.h" />
+    <ClInclude Include="port\acpi_nhlt.h" />
+    <ClInclude Include="port\asoc.h" />
+    <ClInclude Include="port\avs.h" />
+    <ClInclude Include="port\avs_port_bridge.h" />
+    <ClInclude Include="port\avs_tplg_loader.h" />
+    <ClInclude Include="port\control.h" />
+    <ClInclude Include="port\linux_compat.h" />
+    <ClInclude Include="port\messages.h" />
+    <ClInclude Include="port\path.h" />
+    <ClInclude Include="port\soc_compat.h" />
+    <ClInclude Include="port\tokens.h" />
+    <ClInclude Include="port\topology.h" />
+    <ClInclude Include="port\utils.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Inf Include="avswin.inf">
+      <FileType>Document</FileType>
+    </Inf>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
