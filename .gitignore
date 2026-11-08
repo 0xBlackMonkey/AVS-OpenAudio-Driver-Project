@@ -1,0 +1,19 @@
+# Visual Studio / WDK build output
+.vs/
+x64/
+ARM64/
+Debug/
+Release/
+*.user
+*.obj
+*.pdb
+*.sys
+*.cat
+*.cer
+*.pfx
+*.log
+*.tlog
+# firmware, topologies, ACPI dumps: never committed (own licenses)
+*.bin
+*.bin.zst
+*.dat
