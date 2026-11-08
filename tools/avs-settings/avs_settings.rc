@@ -1,0 +1,81 @@
+// SPDX-License-Identifier: GPL-2.0-only
+// avs_settings.rc -- dialog + manifest of AVS Audio Settings.
+// Captions here are placeholders: the program sets every text at start-up
+// in English or Russian (avs_settings.c, string table).
+
+#include <windows.h>
+#include <commctrl.h>
+#include "resource.h"
+
+CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "avs_settings.manifest"
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 0,1,0,0
+ PRODUCTVERSION 0,1,0,0
+ FILEOS VOS_NT_WINDOWS32
+ FILETYPE VFT_APP
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "FileDescription", "AVS Audio Settings"
+            VALUE "FileVersion", "0.1.0"
+            VALUE "ProductName", "AVS OpenAudio Driver"
+            VALUE "LegalCopyright", "GPL-2.0-only, AVS OpenAudio Driver Project contributors"
+            VALUE "OriginalFilename", "avs-settings.exe"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+IDD_MAIN DIALOGEX 0, 0, 300, 304
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX
+CAPTION "AVS Audio Settings"
+FONT 9, "Segoe UI", 400, 0, 0x1
+BEGIN
+    // ---- speakers ---------------------------------------------------------
+    GROUPBOX        "Speakers", IDC_GRP_SPK, 7, 5, 286, 122
+    LTEXT           "DSP gain", IDC_LBL_DSPVOL, 15, 22, 84, 9
+    CONTROL         "", IDC_TRK_DSPVOL, TRACKBAR_CLASS, TBS_HORZ | TBS_NOTICKS | WS_TABSTOP, 100, 19, 128, 15
+    LTEXT           "", IDC_VAL_DSPVOL, 230, 22, 58, 9
+    LTEXT           "Amplifier gain", IDC_LBL_AMPGAIN, 15, 41, 84, 9
+    COMBOBOX        IDC_CMB_AMPGAIN, 103, 39, 96, 120, CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Amplifier volume", IDC_LBL_AMPDIG, 15, 60, 84, 9
+    CONTROL         "", IDC_TRK_AMPDIG, TRACKBAR_CLASS, TBS_HORZ | TBS_NOTICKS | WS_TABSTOP, 100, 57, 128, 15
+    LTEXT           "", IDC_VAL_AMPDIG, 230, 60, 58, 9
+    LTEXT           "Boost current limit", IDC_LBL_BOOST, 15, 79, 84, 9
+    COMBOBOX        IDC_CMB_BOOST, 103, 77, 96, 160, CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "", IDC_TXT_TOTAL, 15, 97, 272, 9
+    LTEXT           "", IDC_TXT_WARN, 15, 109, 272, 14
+
+    // ---- microphones ------------------------------------------------------
+    GROUPBOX        "Microphones", IDC_GRP_MIC, 7, 131, 286, 32
+    LTEXT           "Built-in mic gain", IDC_LBL_MICVOL, 15, 146, 84, 9
+    CONTROL         "", IDC_TRK_MICVOL, TRACKBAR_CLASS, TBS_HORZ | TBS_NOTICKS | WS_TABSTOP, 100, 143, 128, 15
+    LTEXT           "", IDC_VAL_MICVOL, 230, 146, 58, 9
+
+    // ---- headphones -------------------------------------------------------
+    GROUPBOX        "Headphones", IDC_GRP_HP, 7, 167, 286, 28
+    AUTOCHECKBOX    "Jack detection", IDC_CHK_JACK, 15, 179, 272, 10, WS_TABSTOP
+
+    // ---- diagnostics ------------------------------------------------------
+    GROUPBOX        "Diagnostics", IDC_GRP_DIAG, 7, 199, 286, 50
+    LTEXT           "Boot beep, ms", IDC_LBL_BEEP, 15, 213, 84, 9
+    EDITTEXT        IDC_EDT_BEEP, 103, 211, 40, 12, ES_NUMBER | ES_AUTOHSCROLL
+    LTEXT           "Tone amplitude", IDC_LBL_TONE, 153, 213, 84, 9
+    EDITTEXT        IDC_EDT_TONE, 241, 211, 44, 12, ES_NUMBER | ES_AUTOHSCROLL
+    AUTOCHECKBOX    "Stream register dump", IDC_CHK_DBGSTREAM, 15, 230, 136, 10, WS_TABSTOP
+    AUTOCHECKBOX    "IPC payload dump", IDC_CHK_IPCDUMP, 153, 230, 136, 10, WS_TABSTOP
+
+    // ---- status + buttons -------------------------------------------------
+    LTEXT           "", IDC_TXT_STATUS, 7, 255, 286, 20
+    PUSHBUTTON      "Edit file...", IDC_BTN_EDITFILE, 7, 282, 56, 15
+    COMBOBOX        IDC_CMB_LANG, 67, 283, 42, 60, CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Defaults", IDC_BTN_DEFAULTS, 113, 282, 58, 15
+    DEFPUSHBUTTON   "Apply", IDC_BTN_APPLY, 174, 282, 58, 15
+    PUSHBUTTON      "Close", IDC_BTN_CLOSE, 235, 282, 58, 15
+END

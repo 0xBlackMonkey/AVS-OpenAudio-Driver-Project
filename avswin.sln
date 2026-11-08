@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.37614.0 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "avswin", "avswin\avswin.vcxproj", "{79858158-AA43-DFB3-4709-18218695FFBC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "avs-settings", "tools\avs-settings\avs-settings.vcxproj", "{8A5ACBD8-1D9C-443C-A2EE-898A7B1796E9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -17,6 +19,10 @@ Global
 		{79858158-AA43-DFB3-4709-18218695FFBC}.Release|x64.ActiveCfg = Release|x64
 		{79858158-AA43-DFB3-4709-18218695FFBC}.Release|x64.Build.0 = Release|x64
 		{79858158-AA43-DFB3-4709-18218695FFBC}.Release|x64.Deploy.0 = Release|x64
+		{8A5ACBD8-1D9C-443C-A2EE-898A7B1796E9}.Debug|x64.ActiveCfg = Debug|x64
+		{8A5ACBD8-1D9C-443C-A2EE-898A7B1796E9}.Debug|x64.Build.0 = Debug|x64
+		{8A5ACBD8-1D9C-443C-A2EE-898A7B1796E9}.Release|x64.ActiveCfg = Release|x64
+		{8A5ACBD8-1D9C-443C-A2EE-898A7B1796E9}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

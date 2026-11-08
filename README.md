@@ -44,10 +44,11 @@ avswin talks only to the DSP. The codec chips are configured over I2C by CoolSta
 ## Repository layout
 
 ```
-avswin.sln               Visual Studio solution
+avswin.sln               Visual Studio solution: the driver + the settings utility
 avswin/                  the driver project: avswin.vcxproj, sources, avswin.inf
   port/                  ported Linux avs core (GPL-2.0)
 avswin.cfg               example configuration (Asus C434)
+tools/avs-settings/      AVS Audio Settings: GUI for avswin.cfg (plain Win32 C)
 tools/avs_diag.ps1       shows which audio interfaces/endpoints Windows created
 third_party/             the same opengmaxcodec change as a patch file
 ```
@@ -59,7 +60,10 @@ Requirements:
 - Visual Studio 2022 with the *Desktop development with C++* workload;
 - the **Windows Driver Kit** matching the installed Windows SDK.
 
-Open `avswin.sln`, choose **Release | x64** (or Debug), then **Build**. The output folder has `avswin.sys`, `avswin.inf` and `avswin.cat`. Both configurations log the same way (`DbgPrintEx`).
+Open `avswin.sln`, choose **Release | x64** (or Debug), then **Build**. Both projects build into `x64\Release\` at the solution root:
+
+- the driver package `avswin\`, with `avswin.sys`, `avswin.inf` and `avswin.cat`. Both configurations log the same way (`DbgPrintEx`);
+- `avs-settings.exe`, the settings utility. It is built with the static C runtime, so it runs without the VC++ Redistributable.
 
 The project is test-signed. If no certificate is chosen, the WDK creates a test certificate on the first build. To use your own, pick it under Driver Signing → Test Certificate; that choice is stored in your local `.vcxproj.user`, not in the repository. If you also build CoolStar's drivers, sign all of them with the same certificate: then one `.cer` covers everything. One way to create one:
 
@@ -155,6 +159,23 @@ Format:
 | `DebugStreams` | 0 | Dump host-stream registers on every start. |
 | `IpcDumpPayloads` | 0 | Hex-dump every IPC message (noisy). |
 | `CSAudioEndpoint*` | 0/1/2… | CSAudio enum values, from CoolStar's `opengmaxcodec.h`. |
+
+## Settings utility (`avs-settings.exe`)
+
+A single window for the everyday keys of `avswin.cfg`. It needs administrator rights and asks for them itself.
+
+- **Speakers**: DSP gain, plus the MAX98927 gain, volume and current limit. The amplifier settings take effect only with [opengmaxcodec-mod](https://github.com/0xBlackMonkey/opengmaxcodec-mod); the stock driver ignores them.
+- **Microphones**: built-in mic gain.
+- **Headphones**: jack detection.
+- **Diagnostics**: boot beep and dump switches.
+
+The buttons:
+
+- **Apply** rewrites only the lines of these keys in `avswin.cfg`, keeping comments and all other keys. It copies the `Amp*` keys (`AmpSpeakerGain`, `AmpDigitalVolume`, `AmpBoostCurrentLimit`) into each amplifier's `Device Parameters`, then restarts what changed: the amplifiers first, then the AVS device.
+- **Defaults** fills the form from `avswin.cfg.default` when that file sits next to `avswin.cfg`, otherwise from built-in values. Apply saves it.
+- **Edit file...** opens `avswin.cfg` in Notepad for everything else.
+
+The interface language is English or Russian. It follows the Windows UI language and can be switched live. A choice that differs from the Windows language is remembered as `Lang=EN|RU` in `avswin.cfg`; the driver ignores that key.
 
 ## Diagnostics
 
